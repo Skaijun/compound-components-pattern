@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function SearchableList({ items, children, itemKeyFn }) {
     const [searchTerms, setSearchTerms] = useState('');
+    const lastInputChange = useRef();
 
     const searchResults = items.filter(item => JSON.stringify(item).toLocaleLowerCase().includes(searchTerms.toLocaleLowerCase()));
 
     function handleSearch(event) {
-        const searchInput = event.target.value;
-        setSearchTerms(searchInput);
+        if (lastInputChange) {
+            clearTimeout(lastInputChange.current);
+        }
+
+        lastInputChange.current = setTimeout(() => {
+            lastInputChange.current = null;
+            const searchInput = event.target.value;
+            setSearchTerms(searchInput);
+        }, 500);
     }
 
     return (
