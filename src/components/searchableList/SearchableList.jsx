@@ -7,7 +7,7 @@ export default function SearchableList({ items, children, itemKeyFn }) {
     const searchResults = items.filter(item => JSON.stringify(item).toLocaleLowerCase().includes(searchTerms.toLocaleLowerCase()));
 
     function handleSearch(event) {
-        if (lastInputChange) {
+        if (lastInputChange.current) {
             clearTimeout(lastInputChange.current);
         }
 
